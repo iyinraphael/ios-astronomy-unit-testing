@@ -22,6 +22,46 @@ class MarsRoverClientTest: XCTestCase {
      - Is the completion handler called if the data is good
      **/
     
-    
+    func testFetchMarsRover(){
+        
+        let mock = MockDataLoader()
+        mock.data = validRoverJSON
+        
+        let marsRoverClient = MarsRoverClient(networkLoader: mock)
+        let expect  = expectation(description: "wait for network call")
+        
+        marsRoverClient.fetchMarsRover(named: "Curiosity") { (marsRover, error) in
+            XCTAssertNil(error)
+            XCTAssertEqual(marsRover?.name, "Curiosity")
+            XCTAssertEqual(marsRover?.maxSol, 10)
+            XCTAssertEqual(marsRover?.numberOfPhotos, 4156)
+            XCTAssertTrue(marsRover?.solDescriptions.count == 5, "Expecting photos array with five objects")
+            expect.fulfill()
+        }
+        
+        wait(for: [expect], timeout: 4)
+        
+    }
 
+    func testFetchPhotos(){
+        
+    }
+    
+    func testGettingUrl() {
+        
+    }
+    
+    func testCompletionForFailedNetworking() {
+        
+    }
+    
+    func testCompletionForBadData() {
+        
+    }
+    
+    func testCompletionForGoodData() {
+        
+    }
+    
+    
 }
